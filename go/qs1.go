@@ -11,8 +11,8 @@ f.Println("enter your choice (+,-,*,/):")
 f.Scan(&ch)
 switch(ch){
 case "+":f.Println("Addition :",a+b)
-case "-":f.Println("Addition :",a-b)
-case "*":f.Println("Addition :",a*b)
-case "/":f.Println("Addition :",a/b)
+case "-":f.Println("substraction :",a-b)
+case "*":f.Println("multiplication :",a*b)
+case "/":f.Println("division :",a/b)
 }
 }
