@@ -1,0 +1,74 @@
+Room (room_no, room_name, room_type, charges)   
+Guest (Guest_code, Gname, city, no_of persons)  
+
+
+College (cno, cname, street name, ccity)  
+Principal (pno, pname, experience, Salary)  
+
+Employee(eno, ename, designation, salary)  
+ Department(dno, dname, location) 
+
+Person (pnumber, pname, birthdate, income)  
+ Area (area_code, aname, area_type, pincode) 
+
+Doctor (dno, dname, addr, phone_no, specialization)  
+Patient (pno, pat_name, city, disease)
+
+Student (rno, name, city)  
+Teacher(tno, tname, phone_no, salary)  
+
+Policy (pno, pname, premium_amt, policy_type)  
+ Customer (cno, cname. city, agent_name) 
+
+Item (item_no, name, quantity)  13
+Supplier (s_no, name, city)
+
+  
+Student (sno , s_name, s_class) s_class can be either "FY", "SY" or "TY" Teacher (tno , t_name, 
+yrs_experience ) 
+
+Account ( acct_no, acct_type, balance, branch_name)   
+Customer (cust_no, cust_name, cust_city)
+
+Bus ( Bus_no , capacity ,depot_name)  
+Route (Route_no ,source ,destination ,no_of_stations )  
+
+
+Game (gcode, gname, noofplayers, coachname, captain_name)   
+Player (pno, pname)  
+
+Book (Book_no, title, author, price, year_published)  
+Customer (cid, cname, addr)  
+
+Sales_order(s_orderno, s_order_date, order_amt)   
+Client(client_no, name, address)  
+
+Car (car_code, c_name, c_price, color_type) color_type can be “metallic” or “solid”  Customer 
+(cust_code, cust_name, cust_address) 
+
+ Property (pno, description, area, rate)   rate should be > 0  
+Owner (owner_name, city, phno)
+
+Employee (emp_no, emp_name, city, designation, salary)   
+Project (project_no, project_name, status, start_date) 
+
+Project (pno, pname, start_date, budget, status) Project Status Constraints: C – completed, 
+PProgressive, I-Incomplete   
+Department (dno, dname, HOD, no_of_staff)   
+
+Bus (bus_no, capacity, depot_name)   
+Driver (driver_no, driver_name, license_no, address, age)
+
+Customer (cust_no, cust_name, city)   
+Loan (loan_no, loan_amt)            loan_amt should be > 0.  
+
+Customer (cust_no, cust_name, city)  product (product_no, pname, price) price should be > 0
+
+Student (rno, name, city)  
+Subject (subno, subname, teachername)  
+
+Book (bid, btitle, price, publication)  
+Author (aid, aname, mobile number, city)  
+
+Professor (prof_no, prof_name, designation, salary)  
+Department (dno, dname, location) 
