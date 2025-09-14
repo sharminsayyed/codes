@@ -1,0 +1,64 @@
+
+Q.1) Consider the following database:  
+  
+Sales_order(s_orderno, s_order_date, order_amt)   
+Client(client_no, name, address)   
+  
+The relationship is as follows:Client and Sales_order: one-many.  order_amt should be > 0   
+  
+ A) Create above database in PostgreSQL and insert sufficient records.                        [10 Marks]  
+and Execute the following queries in PostGreSQL   
+          
+i) Display all sale records having order date before “__________”. 
+ii) Find maximum sales order amount.  
+iii) Update the client address of all clients from “Nasik” to “Ahilyanagar”.   
+iv) Add column order_status to the Sales_order table.  
+  
+B) Create a stored procedure named as “addrecords” for adding new sales order records.  
+
+ANSWER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+create table client (cno int primary key , cnm varchar(20) ,cadd varchar(20));
+create table saleorder(sno int primary key , sdate date , samt money,cno int references client on update cascade );
+
+iv) Add column order_status to the Sales_order table.
+---> alter table saleorder add column order_status varchar(20);
+
+
+ cno |   cnm   |  cadd
+-----+---------+--------
+   1 | sharmin | pune
+   2 | saad    | nashik
+   3 | shamim  | nashik
+
+
+sno |   sdate   	 |    samt    | cno | order_status
+-----+------------+------------+-----+--------------------------
+ 101 | 2025-08-23 | $20,000.00 |   1 | delivered
+ 102 | 2025-07-24 |  $3,000.00 |   2 | pending
+ 103 | 2025-08-25 |  $5,000.00 |   3 | dispatched
+ 104 | 2025-08-26 | $23,000.00 |   1 | pending
+
+
+i) Display all sale records having order date before “__________”. 
+-->select * from saleorder where sdate <'8/25/2025';
+
+ii) Find maximum sales order amount.  
+-->select max(samt) from saleorder;
+
+iii) Update the client address of all clients from “Nasik” to “Ahilyanagar”.  
+--> update client set cadd = 'ahilyanagar' where cadd = 'nashik'
+
+
+
+B) Create a stored procedure named as “addrecords” for adding new sales order records.  
+
+create or replace procedure addrecords(no int ,sdate date , amt money ,cno int , status varchar(20)) as $$
+begin 
+insert into saleorder values(no , sdate, amt,cno , status);
+raise notice 'records inserted successfully ';
+end;
+$$ language 'plpgsql';
+
+call addrecords(105,'8/27/2025','34000',1,'delivered');
+NOTICE:  records inserted successfully
+CALL
