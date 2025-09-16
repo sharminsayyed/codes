@@ -1,0 +1,12 @@
+#print 1st 10 fibinacci series 
+cat("\n  1st 10 fibinacci series \n")
+n1=0
+n2=1
+cat(a,"\t",b,"\t")
+for(i in 3:10)
+{
+	nth = n1+n2
+	cat ( c,"\t")
+	n1 = n2
+	n2 =nth
+}

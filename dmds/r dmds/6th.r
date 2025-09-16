@@ -1,0 +1,13 @@
+#calculate the sum of 2 matrices of given size 
+r1 = as.integer(readline("enter the row of the 1st matrix:"))
+c1 = as.integer(readline("enter the column of the 2nd matrix:"))
+r2 = as.integer(readline("enter the row of the 2nd matrix:"))
+c2 = as.integer(readline("enter the column of the 2nd matrix:"))
+m1= matrix(c(10,20,30,40,50,60), nrow=r1 ,ncol=c1 , byrow = TRUE)
+m2= matrix(c(10,20,30,40,50,60), nrow=r2 ,ncol=c2 , byrow = TRUE)
+cat("\n 1st matrix :")
+print(m1)
+cat("\n 2nd matrix:")
+print(m2)
+cat("\n addition :")
+print(m1+m2)

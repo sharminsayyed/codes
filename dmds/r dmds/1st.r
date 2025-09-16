@@ -1,0 +1,7 @@
+v1 = c(10L,20L,30L,40L)
+v2 = c(1L,2L,3L,4L)
+cat("\n vector 1 = ",v1)
+cat("\n vector 2 = ",v2)
+cat("\n addition = ",v1+v2)
+cat("\n multiply = ",v1*v2)
+cat("\n substraction = ",v1-v2)
