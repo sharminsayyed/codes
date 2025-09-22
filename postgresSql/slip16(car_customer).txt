@@ -52,3 +52,51 @@ iii) Give the list of all customers staying in ShivajiNagar.
  
 iv)  Increase the price of all “Ferrari” cars by 15%.   
 -->update car set cprice = cprice + (cprice *0.15) where cname  ='ferrari';
+
+
+
+ B) write a stored function to display details of all metallic coloured cars having price in the               
+range 100000 to 500000.
+---->
+
+create or replace function get_details() returns void as $$
+declare 
+	crec car%rowtype;
+	ccur cursor for select * from car where color='metallic' and cprice between 100000 and 500000;
+begin
+	open ccur;
+	loop
+		fetch ccur into crec;
+		raise notice 'car code : %, name :% ,price : %,color : % ',crec.ccode ,crec.cname ,crec.cprice ,crec.color;
+		exit when not found;
+	end loop;
+	close ccur;
+end;
+$$ language 'plpgsql';
+
+
+select get_details();
+NOTICE:  car code : 2, name :lamborgini ,price : 150000,color : metallic
+NOTICE:  car code : 4, name :rolls royce ,price : 500000,color : metallic
+NOTICE:  car code : 1, name :ferrari ,price : 138000,color : metallic
+NOTICE:  car code : <NULL>, name :<NULL> ,price : <NULL>,color : <NULL>
+ get_details
+-------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

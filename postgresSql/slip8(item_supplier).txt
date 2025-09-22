@@ -1,4 +1,5 @@
 
+
 Q.1) Consider the following database:   
   
 Item (item_no, name, quantity)  
