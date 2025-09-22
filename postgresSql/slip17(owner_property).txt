@@ -1,0 +1,73 @@
+
+
+Q.1) Consider the following database:   
+  
+ Property (pno, description, area, rate)   rate should be > 0  
+Owner (owner_name, city, phno)   
+  
+The relationship is as follows: owner and Property : One to Many.   
+  
+  A) Create above database in PostgreSQL and insert sufficient records.                                                 
+and Execute the following queries in PostGreSQL  
+           
+i) List the name of owners that ends with letter ‘a’. 
+ii) Display the average rate of a property.   
+iii) Update the phone Number of “Dr. Vikas” to 8856916175.   
+iv) Display area wise property details.   
+  
+B) Create a stored function named as “min_price” which will find minimum rate of property. 
+
+ANSWER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+create table owner (oname varchar(20) primary key , ocity varchar(20) ,phno varchar(20));
+
+create table property(pno int primary key , pdes varchar(20),parea varchar(20), prate float check (prate >0),oname varchar(20) references owner on update cascade);
+
+
+ oname   | ocity  |    phno
+----------+--------+------------
+ sara     | pune   | 9012343333
+ zara     | mumbai | 9834343331
+ dr vikas | mumbai | 2383343331
+
+
+
+ pno |      pdes       |     parea      | prate  |  oname
+-----+-----------------+----------------+--------+----------
+ 101 | office space    | kondhwa        | 890000 | sara
+ 102 | football ground | salunke vihar  | 190000 | zara
+ 103 | hospital        | wanwori        | 100000 | dr vikas
+ 104 | rental house    | kondhwa        |  20000 | zara
+ 105 | canteen         | salunked vihar |  90000 | sara
+
+
+
+i) List the name of owners that ends with letter ‘a’. 
+-->select * from owner where oname like '%a';
+
+ii) Display the average rate of a property.   
+-->select avg(prate) from property;
+
+iii) Update the phone Number of “Dr. Vikas” to 8856916175.   
+-->update owner set phno = '8856916175' where oname='dr vikas';
+
+iv) Display area wise property details.   
+-->select parea ,pno ,pdes , prate, oname from property order by parea;
+
+
+
+B) Create a stored function named as “min_price” which will find minimum rate of property. 
+--->
+create or replace function min_rate() returns float as $$
+declare res float; 
+begin
+select into res min(prate) from property;
+return res;
+end;
+$$ language 'plpgsql';
+
+
+select min_rate();
+ min_rate
+----------
+    20000
