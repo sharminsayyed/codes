@@ -1,0 +1,80 @@
+
+
+Q.1) Consider the following database:  Item (item_no, name, quantity, rate)  
+Supplier (s_no, name, city, contact)  
+  
+The relationship is as follows: Item-Supplier: many-to-many.  
+ 
+A) Create above database in PostgreSQL and insert sufficient records.                        [10 Marks]  
+     and Execute the following queries in PostGreSQL   
+          
+i) List the details of the suppliers whose name begins with the alphabet „P‟.  
+ii) Delete record of item_no . 
+iii) Display the count of items with rate > 50Rs. 
+iv) List the names of suppliers live in city.  
+  
+ B) Write a function to find the details of items whose quantity is greater than 30. 
+
+ANSWER -------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+create table item (ino int primary key , iname varchar(20) ,iquant int , irate float);
+
+create table supplier (sno int primary key , sname varchar(20) ,scity varchar(20),scont varchar(20));
+
+
+ ino | iname | iquant | irate
+-----+-------+--------+--------
+   1 | chair |      3 |     78
+   2 | fan   |      2 |     28
+   3 | tv    |      9 |     98
+   4 | sofa  |     79 | 232320
+   5 | bed   |     39 |  23000
+
+
+
+sno |  sname  |  scity  |   scont
+-----+---------+---------+------------
+ 101 | pravin  | mumbai  | 7856341299
+ 102 | sharmin | pune    | 901241299
+ 103 | pushpa  | kolkata | 9112241299
+ 104 | ahad    | pune    | 2322141299
+
+
+
+i) List the details of the suppliers whose name begins with the alphabet „P‟. 
+--->  select * from supplier where sname like 'p%';
+
+ii) Delete record of item_no . 
+-->delete from item where ino =4;
+
+iii) Display the count of items with rate > 50Rs. 
+-->select count(ino) from item where irate >50;
+select * from item where rate > 50;
+
+iv) List the names of suppliers live in city.  
+-->  select * from supplier where scity='pune';
+
+
+
+create or replace function get_details() returns void as $$
+declare 
+irec item%rowtype;
+icur cursor for select * from item where iquant > 30;
+begin
+open icur;
+loop
+fetch icur into irec;
+raise notice 'Item no : % , Name : %,Quantity : % ,Rate : %', irec.ino , irec.iname , irec.iquant , irec.irate;
+exit when not found;
+end loop;
+close icur;
+end;
+$$ language 'plpgsql';
+
+
+select get_details();
+NOTICE:  Item no : 4 , Name : sofa,Quantity : 79 ,Rate : 232320
+NOTICE:  Item no : 5 , Name : bed,Quantity : 39 ,Rate : 23000
+NOTICE:  Item no : <NULL> , Name : <NULL>,Quantity : <NULL> ,Rate : <NULL>
+ get_details
+-------------

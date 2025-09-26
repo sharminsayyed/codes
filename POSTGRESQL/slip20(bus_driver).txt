@@ -1,0 +1,74 @@
+
+
+
+Q.1) Consider the following database:   
+  
+Bus (bus_no, capacity, depot_name)   
+Driver (driver_no, driver_name, license_no, address, age)   
+  
+The relationship is as follows: Bus and Driver: M-M with the descriptive attribute 
+Date_of_duty.   
+  
+A) Create above database in PostgreSQL and insert sufficient records.                                                                      
+and Execute the following queries in PostGreSQL   
+          
+i) Find the number of buses having capacity more than 20. 
+ii) Count number of drivers having age > 40.  
+iii) Give the names of all drivers starting with ‘S’.   
+iv) Display all bus details of ____________ depot.  
+  
+B) Write a stored procedure to find maximum of two numbers. 
+
+ANSWER -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+create table bus (bno int primary key , bcap int , dname varchar(20));
+create table driver(dno int primary key , dname varchar(20) ,lno int ,dadd varchar(20) ,dage int);
+create table bus_driver(bno int references bus, dno int references driver ,date_of_duty date);
+
+ bno  | bcap |    dname
+------+------+--------------
+ 1011 |   25 | swargate
+ 1012 |   45 | shivajinagar
+ 1013 |   15 | katraj
+ 1014 |   12 | katraj
+
+ dno | dname  |  lno  |   dadd   | dage
+-----+--------+-------+----------+------
+ 101 | suresh | 23344 | swargate |   45
+ 102 | ramesh | 23324 | swargate |   55
+ 103 | suraj  | 23322 | katraj   |   24
+ 104 | raj    | 23321 | hadapsar |   34
+
+
+i) Find the number of buses having capacity more than 20. 
+-->select count(bno) from bus where bcap > 20;
+-->select * from bus where bcap >20;
+
+ii) Count number of drivers having age > 40.  
+--> select count(dno) from driver where dage >40;
+--> select * from  driver where  dage > 40;
+
+iii) Give the names of all drivers starting with ‘S’.   
+-->select * from driver where dname like 's%';
+
+iv) Display all bus details of ____________ depot.  
+-->select * from bus where dname ='katraj';
+
+
+
+B) Write a stored procedure to find maximum of two numbers. 
+---->
+create or replace procedure maxnumber( a in int ,b in int , ans out int) as $$
+begin 
+if a>b then 
+ans := a;
+else 
+ans := b;
+end if;
+end;
+$$ language 'plpgsql'
+
+ call maxnumber(12,9,null);
+ ans
+-----
+  12

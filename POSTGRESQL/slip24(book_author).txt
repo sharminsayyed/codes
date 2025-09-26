@@ -1,0 +1,79 @@
+Q.1) Consider the following database:   
+Book (bid, btitle, price, publication)  
+Author (aid, aname, mobile number, city)  
+  
+Relation between Author and Book is one to Many  
+  
+        
+A) Create above database in PostgreSQL and insert sufficient records.                       
+and Execute the following queries in PostGreSQL     
+        
+i) display author names that starts with S.  
+ii) Display the total price of book published by “Prentice hall”. 
+iii) Update mobile number of author named __________ to 9844567822 
+iv) Display details of books written by author ________.  
+  
+B) Create a stored function named as “max_price” which will find maximum book price.   
+
+
+Answer--------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+create table author (aid int primary key, aname varchar(20) ,phnno varchar(20) , acity varchar(20));
+create table book(bid int primary key , btitle varchar(20) ,bprice float , bpub varchar(20),aid int references author on update cascade );
+
+
+aid |  aname  |   phnno    |  acity
+-----+---------+------------+---------
+   1 | sharmin | 9078563411 | pune
+   2 | sameer  | 9089561299 | mumbai
+   3 | ahad    | 9289561299 | kolkata
+   4 | laxmi   | 9289561299 | kolkata
+
+
+ bid |      btitle      | bprice |     bpub      | aid
+-----+------------------+--------+---------------+-----
+ 101 | futura           | 230.78 | ambition hall |   1
+ 102 | abundance        | 430.78 | future hall   |   3
+ 103 | story of life    | 230.78 | future hall   |   3
+ 104 | self improvement | 330.78 | prentice hall |   4
+ 105 | self analysis    | 230.78 | prentice hall |   2
+
+
+i) display author names that starts with S.  
+-->select * from author where aname like 's%';
+
+ii) Display the total price of book published by “Prentice hall”. 
+-->select sum(bprice) from book where bpub = 'prentice hall';
+
+iii) Update mobile number of author named __________ to 9844567822 
+--> update author set phnno='9844567822' where aname = 'ahad';
+
+iv) Display details of books written by author ________.  
+--> select * from book ,author where book.aid = author.aid and aname ='ahad';
+--> select bid ,btitle , bprice, bpub,aname from book ,author where book.aid = author.aid and aname ='ahad';
+
+
+
+B) Create a stored function named as “max_price” which will find maximum book price.   
+----->
+create or replace function max_price() returns float as $$
+declare res float;
+begin 
+select into res max(bprice) from book;
+return res;
+end;
+$$ language 'plpgsql';
+
+
+select max_price();
+ max_price
+-----------
+    430.78
+
+
+
+
+
+
+
+

@@ -1,0 +1,110 @@
+
+Q.1) Consider the following database:   
+  
+Customer (cust_no, cust_name, city)   
+Loan (loan_no, loan_amt)            loan_amt should be > 0.  
+  
+Relation between Customer and Loan is Many to Many.  
+  
+A) Create above database in PostgreSQL and insert sufficient records.                        [10 Marks]                                               
+and Execute the following queries in PostGreSQL   
+          
+i) List all customers whose name starts with 'A'.   
+ii) Display city-wise customer names.  
+iii) Display all loan numbers whose amount is more than 2 lakhs.  
+iv)       Change city ‘Pune’ to ‘Mumbai’ for customer ‘________’   
+  
+B) Write a stored function using cursors to display details of all customers sorted by city  
+ names.  
+
+ANSWER------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+
+create table cust (cno int primary key , cnm varchar(20),city varhcar(20));
+
+create table loan (lno int primary key , lamt money );
+
+
+cno |   cnm   |  city
+-----+---------+---------
+   1 | sharmin | pune
+   2 | ahan    | kolkata
+   3 | aryan   | mumbai
+   4 | priya   | kolkata
+
+
+
+ lno |    lamt
+-----+-------------
+ 101 | $300,000.00
+ 102 |  $30,000.00
+ 103 | $230,000.00
+
+
+i) List all customers whose name starts with 'A'.   
+--> select * from cust where cnm like 'a%';
+
+ii) Display city-wise customer names.  
+-->select  city , string_agg(cnm ,',') as cutomername from cust group by city;
+
+iii) Display all loan numbers whose amount is more than 2 lakhs.  
+-->select * from loan where lamt:: numeric >200000;
+
+iv)Change city ‘Pune’ to ‘Mumbai’ for customer ‘________’   
+--> update cust set city ='mumbai' where city ='pune';
+
+
+
+B) Write a stored function using cursors to display details of all customers sorted by city  
+ names.  
+------------->
+create or replace function get_details() returns void as $$
+declare 
+crec cust%rowtype;
+ccur cursor for select * from cust order by city;
+begin
+open ccur;
+loop
+fetch ccur into crec;
+raise notice 'Customer no : % , Name : % ,City :% ',crec.cno ,crec.cnm,crec.city;
+exit when not found;
+end loop;
+close ccur;
+end;
+$$ language 'plpgsql';
+
+
+
+select get_details();
+NOTICE:  Customer no : 2 , Name : ahan ,City :kolkata
+NOTICE:  Customer no : 4 , Name : priya ,City :kolkata
+NOTICE:  Customer no : 3 , Name : aryan ,City :mumbai
+NOTICE:  Customer no : 1 , Name : sharmin ,City :pune
+NOTICE:  Customer no : <NULL> , Name : <NULL> ,City :<NULL>
+ get_details
+-------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

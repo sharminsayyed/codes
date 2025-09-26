@@ -1,0 +1,83 @@
+
+
+Q.1) Consider the following database:   
+  
+ Account ( acct_no, acct_type, balance, branch_name)   
+Customer (cust_no, cust_name, cust_city)  
+    
+Relationships: Customer-Account :1-M. acct_type can be “saving” or “current”  
+  
+A) Create above database in PostgreSQL and insert sufficient records.                                                                                   
+and Execute the following queries in PostGreSQL   
+          
+i) Display information of all saving accounts  having balance > 500,000 
+ii) Count customers whose name starts with ‘r’. 
+iii) Find the total balance at branch “M.G.Road”. 
+iv) Delete the record whose cust_name is __________.  
+  
+ B) Write a stored function using cursors to print names of all customers from city _______.  
+
+ANSWER--------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+create table cust(cno int primary key , cname varchar(20) ,city varchar(20));
+
+create table acc (ano int primary key , atype varchar(20) check (atype in ('saving','current')) ,abal money , abranch varchar(20) , cno int references cust on delete cascade) ;
+
+
+ cno |  cname  |  city
+-----+---------+--------
+   1 | ruhaan  | pune
+   2 | sharmin | mumbai
+   3 | reshma  | pune
+
+
+ ano |  atype  |    abal     |    abranch    | cno
+-----+---------+-------------+---------------+-----
+   1 | saving  | $700,000.00 | katraj branch |   1
+   2 | current | $230,000.00 | katraj branch |   1
+   3 | current | $130,000.00 | mgroad        |   2
+   4 | saving  | $900,000.00 | swargate      |   2
+   5 | current |  $30,000.00 | shivajinagar  |   3
+   6 | saving  | $830,000.00 | mgroad        |   3
+
+
+
+
+i) Display information of all saving accounts  having balance > 500,000 
+--> select * from acc where atype='saving' and abal::numeric  > 500000;
+
+ii) Count customers whose name starts with ‘r’. 
+--> select * from cust where cname like 'r%';
+
+iii) Find the total balance at branch “M.G.Road”. 
+--> select sum(abal) from acc where abranch='mgroad';
+
+iv) Delete the record whose cust_name is __________.  
+-->delete from cust where cname ='sharmin';
+
+
+
+B) Write a stored function using cursors to print names of all customers from city _______.  
+---->
+create or replace function get_detail() returns void as $$
+declare 
+crec cust%rowtype;
+ccur cursor for select * from cust where city ='pune';
+begin
+open ccur;
+loop
+fetch ccur into crec;
+raise notice 'Customer no :% , Name : % ,City : %',crec.cno , crec.cname ,crec.city;
+exit when not found ;
+end loop;
+close ccur;
+end;
+$$ language 'plpgsql';
+
+
+select get_detail();
+NOTICE:  Customer no :1 , Name : ruhaan ,City : pune
+NOTICE:  Customer no :3 , Name : reshma ,City : pune
+NOTICE:  Customer no :<NULL> , Name : <NULL> ,City : <NULL>
+ get_detail
+------------

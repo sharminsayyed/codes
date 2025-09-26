@@ -1,0 +1,52 @@
+
+ 
+Q.1) Consider the following database:     
+                                                                            
+Bus ( Bus_no , capacity ,depot_name)  
+Route (Route_no ,source ,destination ,no_of_stations )  
+  
+ Relationship : Bus-Route : M-1. Bus capacity is not null  
+  
+         
+A) Create above database in PostgreSQL and insert sufficient records.                     
+and Execute the following queries in PostGreSQL   
+          
+i) List all buses which belongs to depot ___ . 
+ii) Delete Bus details whose Bus number is  .  
+iii) List the route details having number of stations > 10.  
+iv)       List all routes starting from Station ______________.  
+  
+B) Write a stored function using cursors to accept route_no from the user and display number of 
+stations of that route.         
+
+ANSWER -------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+create table route (rno int primary key , source varchar(20) ,dest varchar(20) ,nfs int );
+
+create table bus(bno int primary key , bcap int, depotnm varchar(20) , rno int references route on delete cascade);
+
+
+i) List all buses which belongs to depot ___ . 
+-->select * from bus where depotnm='katraj';
+
+ii) Delete Bus details whose Bus number is  .  
+-->delete from bus where bno =2;
+
+iii) List the route details having number of stations > 10.  
+--> select * from route where nfs >10;
+
+iv)       List all routes starting from Station ______________.  
+--> select * from route where source='swargate';
+
+
+B) Write a stored function using cursors to accept route_no from the user and display number of 
+stations of that route.
+----->
+create or replace function get_nfs(no int) returns int as $$
+declare 
+res int ;
+begin
+select into res nfs from route where rno = no;
+return res;
+end;
+$$ language 'plpgsql';

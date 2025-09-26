@@ -1,0 +1,79 @@
+Q.1) Consider the following database:                                                                               
+Book (Book_no, title, author, price, year_published)  
+Customer (cid, cname, addr)  
+  
+Relation between Book and Customer is Many to Many with quantity as descriptive attribute.  
+  
+ A) Create above database in PostgreSQL and insert sufficient records.                         [10 marks]                                               
+and Execute the following queries in PostGreSQL     
+      
+i) Display customer details staying at “Pune”.  
+ii) Display author wise details of book.  
+iii) Display the average price of a book. 
+iv) Delete the record from book table with Book_no .  
+  
+B) Write a function, to define a cursor to print the details of the Books published in year 2024.
+
+
+ANSWER --------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+create table book(bno int primary key , bt varchar(20) ,ba varchar(20),bp float,byp int);
+
+ create table cust (cid int primary key , cnm varchar(20),cadd varchar(20));
+
+ bno |        bt        |    ba     |   bp   | byp
+-----+------------------+-----------+--------+------
+   1 | future is bright | dr kapil  | 780.89 | 2024
+   2 | dare to laugh    | mr vikas  | 580.89 | 2022
+   3 | sentimental      | mr vikram | 891.89 | 2024
+   4 | love for life    | mr vikram | 891.89 | 2020
+   5 | no cure          | dr kapil  | 780.89 | 2014
+
+
+ cid |   cnm   |  cadd
+-----+---------+---------
+ 101 | sharmin | pune
+ 102 | ahad    | mumbai
+ 103 | samrin  | pune
+ 104 | priya   | kolkata
+
+
+
+i) Display customer details staying at “Pune”.  
+-->select * from cust where cadd ='pune';
+
+ii) Display author wise details of book.  
+--> select * from book order by ba;
+
+iii) Display the average price of a book. 
+--> select avg(bp) from book;
+
+iv) Delete the record from book table with Book_no .  
+--> delete from book where bno = 5;
+
+
+
+B) Write a function, to define a cursor to print the details of the Books published in year 2024.
+---->
+create or replace function get_details() returns void as $$
+declare 
+brec book%rowtype;
+bcur cursor for select * from book where byp=2024;
+begin
+open bcur;
+loop
+fetch bcur into brec;
+raise notice 'Book No : %, title :% ,author : %,Price :% ,year published : %' ,brec.bno , brec.bt, brec.ba, brec.bp, brec.byp;
+exit when not found;
+end loop;
+close bcur;
+end;
+$$ language 'plpgsql';
+
+
+select get_details();
+NOTICE:  Book No : 1, title :future is bright ,author : dr kapil,Price :780.89 ,year published : 2024
+NOTICE:  Book No : 3, title :sentimental ,author : mr vikram,Price :891.89 ,year published : 2024
+NOTICE:  Book No : <NULL>, title :<NULL> ,author : <NULL>,Price :<NULL> ,year published : <NULL>
+ get_details
+-------------

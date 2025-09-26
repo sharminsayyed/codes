@@ -1,0 +1,62 @@
+Q.1) Consider the following database:   
+  
+Person (pnumber, pname, birthdate, income)  
+ Area (area_code, aname, area_type, pincode)  
+  
+The relationship is as follows: Person-Area: many-to-one. The area_type can have values as 
+either “urban” or “rural”.  
+  
+ A) Create above database in PostgreSQL and insert sufficient records.                        [10 Marks]  
+    Execute the following queries in PostGreSQL   
+          
+i) List the details of all people whose name starts with the alphabet “R”.  
+ii) Display the details of people in the sorted order of their income.  
+iii) Display the count of areas of “urban” type. 
+iv) Change the pincode of “kalyaninagar” to 411036.  
+  
+B) Create a stored procedure named as “addrecords” for adding person records.
+
+Answer ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+ create table area(acode int primary key , anm varchar(20) ,type varchar(20) check(type in ('urban','rural')),pincode int);
+ create table person(pno int primary key , pnm varchar(20) ,pbd date ,income money ,acode int references area on update cascade);
+
+ acode |      anm      | type  | pincode
+-------+---------------+-------+---------
+   101 | kondhwa       | urban |  411048
+   102 | salunke vihar | rural |  411043
+   103 | wanwori       | urban |  411023
+   104 | kalyaninagar  | rural |  411011
+
+ pno |   pnm   |    pbd     |   income    | acode
+-----+---------+------------+-------------+-------
+   1 | sharmin | 2004-12-23 | $200,000.00 |   101
+   2 | ramiz   | 2002-02-03 |  $23,000.00 |   102
+   3 | rizwan  | 2000-12-04 |  $90,000.00 |   103
+   4 | saad    | 1980-01-04 | $750,000.00 |   104
+
+
+i) List the details of all people whose name starts with the alphabet “R”.  
+--> select * from person where pnm like 'r%';
+
+ii) Display the details of people in the sorted order of their income.  
+-->select * from person order by income;
+
+iii) Display the count of areas of “urban” type. 
+-->select count(acode) from area where type='urban';
+
+iv) Change the pincode of “kalyaninagar” to 411036.  
+--> update area set pincode = 411036 where anm ='kalyaninagar';
+
+
+B) Create a stored procedure named as “addrecords” for adding person records.
+-->
+create or replace procedure addrecords(pno int ,pname varchar(20), birthdate date , income money , ano int) as $$
+begin
+insert into person values(pno , pname , birthdate , income , ano);
+raise notice 'record inserted successfully ';
+end;
+$$ language 'plpgsql';
+
+call addrecords(6,'ayub','6/1/1943','500000',103);
+NOTICE:  record inserted successfully
+CALL

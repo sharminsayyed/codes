@@ -1,0 +1,82 @@
+
+
+Q.1) Consider the following database:   
+  
+Project (pno, pname, start_date, budget, status) Project Status Constraints: C – completed, 
+PProgressive, I-Incomplete   
+Department (dno, dname, HOD, no_of_staff)   
+  
+The relationship is as follows: Project- Department Many to One.   
+  
+ A) Create above database in PostgreSQL and insert sufficient records.                        [10 Marks]  
+  and Execute the following queries in PostGreSQL   
+        
+i) Display the project names that have start date as 12/6/2019.   
+ii) Display the total budget of projects.   
+iii) Display the HOD name of Computer department 
+iv) all project names having budget more than 30000.  
+  
+ B) Write a stored function using cursors to display names of all projects which are “in  
+ progress”. 
+
+
+ANSWER ---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+create table dept (dno int primary key , dnm varchar(20 ), dhod varchar(20 ), nfs int );
+
+create table proj (pno int primary key , pnm varchar(20) ,pd date, pb float ,ps varchar(20), dno int references dept);
+
+
+ dno |   dnm    |     dhod     | nfs
+-----+----------+--------------+-----
+   1 | computer | mr vikas     |  23
+   2 | science  | miss emaan   |  13
+   3 | it       | miss sharmin |  40
+
+
+ pno |       pnm        |     pd     |   pb   | ps | dno
+-----+------------------+------------+--------+----+-----
+ 101 | employee website | 2019-06-12 |  90000 | P  |   1
+ 102 | explore nature   | 2019-06-12 |  23000 | C  |   2
+ 103 | API integration  | 2023-12-22 | 120000 | P  |   3
+
+
+i) Display the project names that have start date as 12/6/2019.  
+--> select * from proj where pd ='6/12/2019';
+ 
+ii) Display the total budget of projects.   
+--> select sum(pb) from proj;
+
+iii) Display the HOD name of Computer department 
+--> select dhod from dept where dnm = 'computer';
+
+iv) all project names having budget more than 30000.  
+-->select * from proj where pb >30000;
+
+
+ B) Write a stored function using cursors to display names of all projects which are “in  
+ progress”. 
+---->
+create or replace function get_details() returns void as $$
+declare 
+prec proj%rowtype;
+pcur cursor for select * from proj where ps ='P';
+begin
+open pcur;
+loop
+fetch pcur into prec;
+raise notice 'Project No : % , Name : % , Date : % ,Budget :% ,Status :% ', prec.pno , prec.pnm ,prec.pd,prec.pb,prec.ps;
+exit when not found;
+end loop;
+close pcur;
+end;
+$$ language 'plpgsql';
+
+
+
+select get_details();
+NOTICE:  Project No : 101 , Name : employee website , Date : 2019-06-12 ,Budget :90000 ,Status :P
+NOTICE:  Project No : 103 , Name : API integration , Date : 2023-12-22 ,Budget :120000 ,Status :P
+NOTICE:  Project No : <NULL> , Name : <NULL> , Date : <NULL> ,Budget :<NULL> ,Status :<NULL>
+ get_details
+-------------

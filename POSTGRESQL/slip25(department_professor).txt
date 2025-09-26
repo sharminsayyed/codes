@@ -1,0 +1,66 @@
+Q.1) Consider the following database:   
+  
+Professor (prof_no, prof_name, designation, salary)  
+Department (dno, dname, location)  
+  
+The relationship is as follows: Department-Professor: one to many.   
+    
+A) Create above database in PostgreSQL and insert sufficient records.                                                                   
+and  Execute the following queries in PostGreSQL  
+          
+i) Display average salary of professor.  
+ii) List the details of all the departments located at ________.  
+iii) Display the details of professors whose names ends with an alphabet “r”.  
+iv) Display details of all professors working in “Computer” department.  
+  
+ B) Create a stored procedure named as “display_message” which will display the message  
+ “Welcome to RDBMS world!!!!.”     
+
+ANSWER------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+create table department(dno int primary key , dname varchar(20) , dloc varchar(20));
+create table professor (pno int primary key , pname varchar(20) ,pdesg varchar(20) ,psal money, dno int references department);
+
+
+ dno |  dname   |  dloc
+-----+----------+---------
+ 101 | computer | mumbai
+ 102 | science  | pune
+ 103 | maths    | pune
+ 104 | history  | kolkata
+
+ pno |    pname    |   pdesg   	|    psal     | dno
+-----+-------------+-----------+-------------+-----
+   1 | mr saad     | assistant |  $45,000.00 | 102
+   2 | mrs simaran | associate | $450,000.00 | 102
+   3 | mr river    | assistant |  $50,000.00 | 101
+   4 | mr peter    | assistant |  $50,000.00 | 103
+   5 | miss pari   | associate |  $34,000.00 | 104
+   6 | mr shamim   | associate | $500,000.00 | 101
+
+
+i) Display average salary of professor.  
+--> select avg(psal :: numeric) from professor;
+
+ii) List the details of all the departments located at ________.  
+-->select * from department where dloc ='pune';
+
+iii) Display the details of professors whose names ends with an alphabet “r”.  
+--> select * from professor where pname like '%r';
+
+iv) Display details of all professors working in “Computer” department.  
+--> select * from professor where dno in (select dno from department where dname ='computer');
+
+
+
+ B) Create a stored procedure named as “display_message” which will display the message  
+ “Welcome to RDBMS world!!!!.” 
+-------->
+create or replace procedure display_meessage() as $$
+begin 
+raise notice'Welcome to RDBMS world';
+end;
+$$ language 'plpgsql';
+
+call display_meessage();
+NOTICE:  Welcome to RDBMS world
+CALL
