@@ -21,7 +21,7 @@ int main(){
     }
     printf("process id\tburst time\twaiting time\tturnaaround time\n");
     for(i = 0; i < n; i++){
-        printf("%d \t\t", pid[i]);
+        printf("P%d \t\t", pid[i]);
         printf("%d \t\t", bt[i]);
         printf("%d \t\t", wt[i]);
         printf("%d \n", (bt[i] +wt[i]));
@@ -31,5 +31,13 @@ int main(){
     awt = (float)twt / (float)n;
     atat = (float)ttt / (float)n;
     printf("Average waiting time : %f \n Average Turn Around Time : %f \n", awt, atat);
-    return 0;
+
+    // print gantt chart
+    printf("Gantt chart  :\n");
+    for (i = 0; i < n;i++){
+        printf("P%d ", pid[i]);
+        if(i != n-1)
+            printf("->");
+    }
+        return 0;
 }
