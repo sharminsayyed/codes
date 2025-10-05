@@ -1,26 +1,16 @@
-'''
- Write a Python program to check if a given key already exists in a dictionary. If key exists
-replace with another key/value pair.
-'''
+# 1. Write a Python program to combine two dictionary adding values for common keys. 
+#            Sample Dictionary: 
+#             d1={'a':100,'b':200,'c':300} 
+#             d2={'a':300,'b':200,'d':400} 
+#             Sample output: Counter({'a': 400, 'b': 400, 'd': 400, 'c': 300}) 
 
+d1 = {'a' :100,'b':200,'c':300}
+d2 = {'a' :300 ,'b':200,'d':400}
 
-d = {}
-n = int(input("enter the number of entries u want ?"))
-for i in range(n):
-    key = input("enter key :")
-    value = input("enter value :")
-    d[key] = value
+for key in d1.keys():
+    if key in d2.keys():
+        d2[key] += d1[key]
+    else:
+        d2[key] = d1[key]
 
-print(d)
-
-key = input("enter the key to find :")
-if key in d.keys():
-    print(f"the key {key} exists and the values is {d[key]}")
-    d.update({4: 90})
-    d.pop(key)                          #
-    print(f"after replacing :{d}")
-
-else:
-    print(f"the key {key} does not exists")
-
-
+print(d2)
